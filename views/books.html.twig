@@ -1,0 +1,17 @@
+{% extends 'index.html.twig' %}
+
+{% block header %}
+    <a href="/">home</a>
+{% endblock %}
+
+{% block content %}
+    {% if books is not empty %}
+        {% for book in books %}
+            <li><a href="/book/{{book.getId}}">{{book.getTitle}}</a></li>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block controls %}
+
+{% endblock %}

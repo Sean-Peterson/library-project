@@ -1,0 +1,26 @@
+{% extends 'index.html.twig' %}
+
+{% block header %}
+    <a href="/">home</a>
+{% endblock %}
+
+{% block content %}
+    {% if authors is not empty %}
+        {% for author in authors %}
+            <li><a href="/author/{{author.getId}}">{{author.getFullName}}</a></li>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block controls %}
+<h3>Add Author</h3>
+<form action="/post/add_author" method="post">
+    <label for="first_name">First Name</label>
+    <input required type="text" name="first_name">
+
+    <label for="last_name">Last Name</label>
+    <input required type="text" name="last_name">
+
+    <button type="submit" name="button">Add</button>
+</form>
+{% endblock %}

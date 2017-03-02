@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__."/../src/Author.php";
+
     class BookTitle
     {
         private $title;
@@ -69,6 +71,31 @@
             $this->title = $new_title;
         }
 
+        function addAuthor($author_id)
+        {
+        $GLOBALS['DB']->exec("INSERT INTO books_authors (book_title_id, author_id) VALUES ({$this->getId()}, {$author_id});");
+        }
 
+        function getAuthors()
+        {
+            $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM book_titles
+                JOIN books_authors ON (books_authors.book_title_id = book_titles.id)
+                JOIN authors ON (authors.id = books_authors.author_id)
+                WHERE book_titles.id = {$this->getId()};");
+            $authors = [];
+            if ($returned_authors == null)
+            {
+                return null;
+            }
+            foreach($returned_authors as $author)
+            {
+                $first_name = $author['first_name'];
+                $last_name = $author['last_name'];
+                $id = $author['id'];
+                $new_author = new Author($first_name, $last_name, $id);
+                array_push($authors, $new_author);
+            }
+            return $authors;
+        }
     }
  ?>

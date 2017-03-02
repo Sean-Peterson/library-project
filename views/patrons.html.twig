@@ -1,0 +1,22 @@
+{% extends 'index.html.twig' %}
+
+{% block header %}
+    <a href="/">home</a>
+{% endblock %}
+
+{% block content %}
+<h1>Users</h1>
+
+    {% if patrons != null %}
+        <ul>
+
+            {% for patron in patrons %}
+            <li>{{patron.getFullName}}<a href="/patron/{{patron.getId}}"><button type="button" name="button">Login</button></a></li>
+
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+{% block controls %}{% endblock %}

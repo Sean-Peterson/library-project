@@ -24,4 +24,12 @@
         <button type="submit" name="button">DELETE</button>
 
     </form>
+    <form action="/post/add_book_to_author/{{author.getId}}" method="post">
+        <select name="book">
+        {% for book in books %}
+                <option value="{{book.getId}}">{{book.getTitle}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="button">Credit book to author</button>
+    </form>
 {% endblock %}

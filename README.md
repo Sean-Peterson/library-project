@@ -19,3 +19,7 @@ list books by author or title
 assign authors to books
 /
 assign books to authors
+
+
+
+title is just title/ also need a copies table that is inputted into when a new title is created (a required field) (total amount of copies). When a patron signs out a book we will then add one to the number of checked out books that title has.

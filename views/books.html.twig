@@ -7,11 +7,30 @@
 {% block content %}
     {% if books is not empty %}
         {% for book in books %}
-            <li><a href="/book/{{book.getId}}">{{book.getTitle}}</a></li>
-        {% endfor %}
-    {% endif %}
+            <li>
+                <a href="/book/{{book.getId}}">{{book.getTitle}}</a>
+            </li>
+            {% set authors = book.getAuthors %}
+            {% if authors != null %}
+                <ul>
+                {% for author in authors %}
+                    <li>{{author.getFullName}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+    {% endfor %}
+{% endif %}
 {% endblock %}
 
 {% block controls %}
+<h3>Add Book</h3>
+<form action="/post/add_book" method="post">
+    <label for="title">Title</label>
+    <input required type="text" name="title"><br>
 
+    <label for="number_of_copies">Number of Copies</label>
+    <input required type="number" name="number_of_copies" value="1">
+
+    <button type="submit" name="button">Add</button>
+</form>
 {% endblock %}

@@ -100,17 +100,40 @@
 
         function checkOutBook($book_title_id, $checkout_date, $due_date)
         {
+            $query_one = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE book_title_id = {$book_title_id} AND patron_id IS NULL LIMIT 1;");
+            $test1 = $query_one->fetchAll(PDO::FETCH_ASSOC);
+            $book_copies_id = $test1[0]['id'];
             $GLOBALS['DB']->exec("UPDATE book_copies SET patron_id = {$this->getId()} WHERE book_title_id = {$book_title_id} AND patron_id IS NULL LIMIT 1;");
 
-            $query = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE patron_id = {$this->getId()} AND book_title_id = {$book_title_id} LIMIT 1;");
-            $copy = $query->fetchAll(PDO::FETCH_ASSOC);
+            $test = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE patron_id = {$this->getId()} AND book_title_id = {$book_title_id} LIMIT 1;");
 
-            $book_copies_id = $copy[0]['id'];
-
-
-            $GLOBALS['DB']->exec("INSERT INTO checkouts (patron_id, book_copies_id, checkout_date, due_date) VALUES ({$this->getId()}, {$book_copies_id}, '{$checkout_date}', {$due_date})");
+            $query_two = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE patron_id = {$this->getId()} AND book_title_id = {$book_title_id} LIMIT 1;");
+            $copy = $query_two->fetchAll(PDO::FETCH_ASSOC);
 
 
+            $GLOBALS['DB']->exec("INSERT INTO checkouts (patron_id, book_copies_id, checkout_date, due_date) VALUES ({$this->getId()}, {$book_copies_id}, '{$checkout_date}', '{$due_date}')");
+        }
+
+        function history()
+        {
+            $returned_books = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE patron_id = {$this->getId()}");
+            $output_array = [];
+            foreach($returned_books as $book)
+            {
+                $book_copies_id = $book['book_copies_id'];
+                $query_one = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE id ={$book_copies_id};");
+                $copy = $query_one->fetchAll(PDO::FETCH_ASSOC);
+                $book_title_id = $copy[0]['book_title_id'];
+                $new_book = BookTitle::find($book_title_id);
+                $title = $new_book->getTitle();
+
+
+                $checkout_date = $book['checkout_date'];
+                $due_date = $book['due_date'];
+                $new_array = array('title' => $title, 'due_date' =>$due_date,'checkout_date' =>$checkout_date);
+                array_push($output_array, $new_array);
+            }
+            return $output_array;
 
         }
 

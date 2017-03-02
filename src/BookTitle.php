@@ -105,5 +105,33 @@ require_once __DIR__."/../src/Author.php";
             $available_copies = ($copies['COUNT(*)']);
             return $available_copies;
         }
+
+        function getCheckedOutBooks()
+        {
+            $checked_out_copies = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE patron_id IS NOT NULL AND book_title_id = {$this->getId()};");
+            $copies = $checked_out_copies->fetchAll(PDO::FETCH_ASSOC);
+            $output_array = [];
+            foreach ($copies as $copy)
+            {
+                $book_title_id = $copy['book_title_id'];
+                $new_book = BookTitle::find($book_title_id);
+                $title = $new_book->getTitle();
+
+                $id = $copy['id'];
+                $patron_id = $copy['patron_id'];
+                $patron = Patron::find($patron_id);
+                $new_array = array('title' => $title,'patron_id' =>$patron_id, 'patron'=> $patron, 'id' => $id);
+                array_push($output_array, $new_array);
+            }
+            return $output_array;
+        }
+
+        static function returnBook($book_copies_id)
+        {
+            $GLOBALS['DB']->exec("UPDATE book_copies SET patron_id = NULL WHERE id = {$book_copies_id};");
+        }
+
+
+
     }
  ?>

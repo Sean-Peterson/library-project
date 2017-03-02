@@ -31,4 +31,14 @@
         </select>
         <button type="submit" name="button">Add author to book</button>
     </form>
+
+    <form class="" action="/return_book/{{book.getId}}" method="post">
+        <select name="returned_book">
+            {% for book in checkout_books %}
+                <option value="{{book['id']}}">{{book['patron'].getFullName}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="button">Return {{book.getTitle}}</button>
+
+    </form>
 {% endblock %}

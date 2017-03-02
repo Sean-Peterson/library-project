@@ -52,7 +52,7 @@
             }
             return $patrons;
         }
-        static function findPatron($id)
+        static function find($id)
         {
             $find_patron = $GLOBALS['DB']->query("SELECT * FROM patrons WHERE id = {$id};");
             $found_patron = null;
@@ -81,23 +81,37 @@
         }
         function getBorrowedBooks()
         {
-            $borrowed_books = $GLOBALS['DB']->query("SELECT .* FROM
-                JOIN  ON ( = )
-                JOIN  ON (.id = )
-                WHERE  = {$this->getId()};");
+            $query =$GLOBALS['DB']->query("SELECT * FROM book_copies WHERE patron_id = {$this->id};");
             $books = [];
-            if ($borrowed_books == null)
-            {
-                return null;
-            }
-            foreach($borrowed_books as $book)
+            $borrowed_books = $query->fetchAll(PDO::FETCH_ASSOC);
+            // if ($borrowed_books == null)
+            // {
+            //     return null;
+            // }
+            for($i = 0; $i < sizeof($borrowed_books); $i++)
             {
 
-                $id = $book['book_title_id'];
-                $new_book = BookTitle($id);
+                $id = (int)$borrowed_books[$i]['book_title_id'];
+                $new_book = BookTitle::find($id);
                 array_push($books, $new_book);
             }
             return $books;
+        }
+
+        function checkOutBook($book_title_id, $checkout_date, $due_date)
+        {
+            $GLOBALS['DB']->exec("UPDATE book_copies SET patron_id = {$this->getId()} WHERE book_title_id = {$book_title_id} AND patron_id IS NULL LIMIT 1;");
+
+            $query = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE patron_id = {$this->getId()} AND book_title_id = {$book_title_id} LIMIT 1;");
+            $copy = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $book_copies_id = $copy[0]['id'];
+
+
+            $GLOBALS['DB']->exec("INSERT INTO checkouts (patron_id, book_copies_id, checkout_date, due_date) VALUES ({$this->getId()}, {$book_copies_id}, '{$checkout_date}', {$due_date})");
+
+
+
         }
 
     }

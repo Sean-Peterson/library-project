@@ -1,0 +1,28 @@
+{% extends 'index.html.twig' %}
+
+{% block header %}
+    <a href="/">home</a>
+{% endblock %}
+
+{% block content %}
+<h4>Checked out Books</h4>
+    {% for book in my_books %}
+        <p>
+            {{book.getTitle}}
+        </p>
+    {% endfor %}
+
+    <h4>Check out a book</h4>
+    <form action="/patron/checkout/{{patron.getId}}" method="post">
+        <select class="" name="checkout_book">
+            {% for book in books %}
+                {% if book.availableCopies > 0 %}
+                    <option value="{{book.getId}}">{{book.getTitle}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <button type="sumbit" name="button">CheckOut</button>
+    </form>
+{% endblock %}
+
+{% block controls %}{% endblock %}

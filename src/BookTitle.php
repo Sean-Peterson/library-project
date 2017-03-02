@@ -97,5 +97,13 @@ require_once __DIR__."/../src/Author.php";
             }
             return $authors;
         }
+        function availableCopies()
+        {
+            $number_of_copies = $GLOBALS['DB']->query("SELECT COUNT(*) FROM book_copies WHERE book_title_id = {$this->getId()} AND patron_id IS NULL;");
+            $number_of_copies = $number_of_copies->fetchAll(PDO::FETCH_ASSOC);
+            $copies = $number_of_copies[0];
+            $available_copies = ($copies['COUNT(*)']);
+            return $available_copies;
+        }
     }
  ?>

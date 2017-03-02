@@ -28,6 +28,10 @@
         return $app['twig']->render("index.html.twig");
     });
 
+    $app->get("/librarians", function() use ($app) {
+        return $app['twig']->render("librarians.html.twig");
+    });
+
 
     $app->get("/authors", function() use ($app) {
         return $app['twig']->render("authors.html.twig", array('books' => BookTitle::getAll(), 'authors' => Author::getAll()));
@@ -76,6 +80,12 @@
         return $app['twig']->render("books.html.twig", array('books' => BookTitle::getAll(), 'authors' => Author::getAll()));
     });
 
+    $app->get("/patron_view/{id}", function($id) use ($app) {
+        $patron = Patron::find($id);
+        $borrowed_books = $patron->getBorrowedBooks();
+        return $app['twig']->render("patron_view.html.twig", array('books' => BookTitle::getAll(),'my_books' => $borrowed_books,'patron' => $patron));
+    });
+
     $app->post("/post/add_book", function() use ($app) {
         $new_book = new BookTitle($_POST['title']);
         $new_book->save();
@@ -89,6 +99,7 @@
     });
 
     $app->get("/book/{id}", function($id) use ($app) {
+        //USE availableCopies FUNCTION WHEN REFACTORING
         $number_of_copies = $GLOBALS['DB']->query("SELECT COUNT(*) FROM book_copies WHERE book_title_id = {$id} AND patron_id IS NULL;");
         $number_of_copies = $number_of_copies->fetchAll(PDO::FETCH_ASSOC);
         $copies = $number_of_copies[0];
@@ -113,10 +124,25 @@
         return $app['twig']->render("patrons.html.twig", array('patrons' => Patron::getAll()));
     });
 
+    $app->get("/patron/{id}", function($id) use ($app) {
+        $patron = Patron::find($id);
+        return $app['twig']->render("patron_login.html.twig", array('patron' => $patron));
+    });
+
     $app->post("/add_patron", function() use ($app) {
         $new_patron = new Patron($_POST['first_name'], $_POST['last_name']);
         $new_patron->save();
         return $app['twig']->render("patrons.html.twig", array('patrons' => Patron::getAll(), 'books' => BookTitle::getAll(), 'authors' => Author::getAll()));
+    });
+    $app->post("/patron/checkout/{id}", function($id) use ($app) {
+        $patron = Patron::find($id);
+        $due_date = date("Y/m/d", strtotime("+1 week"));
+        $checkout_date = date("Y/m/d");
+        $patron->checkOutBook($_POST['checkout_book'], $checkout_date, $due_date);
+        $borrowed_books = $patron->getBorrowedBooks();
+        // var_dump($borrowed_books);
+        return $app['twig']->render("patron_view.html.twig", array('books' => BookTitle::getAll(),'my_books' => $borrowed_books,'patron' => $patron));
+
     });
 
     return $app;

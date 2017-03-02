@@ -75,9 +75,6 @@
     $app->get("/books", function() use ($app) {
         return $app['twig']->render("books.html.twig", array('books' => BookTitle::getAll(), 'authors' => Author::getAll()));
     });
-    $app->get("/patrons", function() use ($app) {
-        return $app['twig']->render("patrons.html.twig", array('patrons' => Patron::getAll()));
-    });
 
     $app->post("/post/add_book", function() use ($app) {
         $new_book = new BookTitle($_POST['title']);
@@ -96,7 +93,6 @@
         $number_of_copies = $number_of_copies->fetchAll(PDO::FETCH_ASSOC);
         $copies = $number_of_copies[0];
         $something = ($copies['COUNT(*)']);
-
         return $app['twig']->render("edit_book.html.twig", array('copies'=>$something ,'book' => BookTitle::find($id), 'authors' => Author::getAll()));
     });
 
@@ -111,6 +107,16 @@
         $book = BookTitle::find($id);
         $book->delete();
         return $app['twig']->render("books.html.twig", array('books' => BookTitle::getAll(), 'authors' => Author::getAll()));
+    });
+
+    $app->get("/patrons", function() use ($app) {
+        return $app['twig']->render("patrons.html.twig", array('patrons' => Patron::getAll()));
+    });
+
+    $app->post("/add_patron", function() use ($app) {
+        $new_patron = new Patron($_POST['first_name'], $_POST['last_name']);
+        $new_patron->save();
+        return $app['twig']->render("patrons.html.twig", array('patrons' => Patron::getAll(), 'books' => BookTitle::getAll(), 'authors' => Author::getAll()));
     });
 
     return $app;

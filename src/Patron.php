@@ -37,7 +37,7 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO patrons (first_name, last_name) VALUES ('{$this->getFirstName}','{$this->getLastName}');");
+            $GLOBALS['DB']->exec("INSERT INTO patrons (first_name, last_name) VALUES ('{$this->getFirstName()}','{$this->getLastName()}');");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
@@ -81,7 +81,7 @@
         }
         function getBorrowedBooks()
         {
-            $borrowed_books = $GLOBALS['DB']->query("SELECT .* FROM 
+            $borrowed_books = $GLOBALS['DB']->query("SELECT .* FROM
                 JOIN  ON ( = )
                 JOIN  ON (.id = )
                 WHERE  = {$this->getId()};");

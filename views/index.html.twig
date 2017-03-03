@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css" media="screen">
-    <title>Library</title>
+        <src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles.css" media="screen">
+        <title>Library</title>
     </head>
     <body>
         <div class="container">
             <h1>Welcome to the library</h1>
-            {% block header %}
-            {% endblock %}
+            {% block header %}{% endblock %}
 
             {% block content %}
                 <div class="row">
                     <div class="col-md-2">
-                        <p><a href="/librarians">Librarian Login</a></p>
+                        <p>
+                            <a href="/librarians">Librarian Login</a>
+                        </p>
                     </div>
                     <div class="col-md-2">
-                        <p><a href="/patrons">Patron Login</a></p>
+                        <p>
+                            <a href="/patrons">Patron Login</a>
+                        </p>
                     </div>
                 </div>
             {% endblock %}
 
-            {% block controls %}
-            {% endblock %}
+            {% block controls %}{% endblock %}
         </div>
     </body>
 </html>

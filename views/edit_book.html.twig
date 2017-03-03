@@ -1,15 +1,17 @@
 {% extends 'index.html.twig' %}
 
 {% block header %}
-    <a href="/librarians">home</a> <a href="/books">back</a>
+    <a href="/librarians">home</a>
+    <a href="/books">back</a>
 {% endblock %}
 
 {% block content %}
-    <h2>Edit {{book.getTitle}}</h2>
+    <h2>Edit
+        {{book.getTitle}}</h2>
 {% endblock %}
 
 {% block controls %}
-<h5>number Avaible = {{copies}}</h5>
+    <h5>number Avaible = {{copies}}</h5>
     <form action="/patch/edit_book/{{book.getId}}" method="post">
         <input name="_method" type="hidden" value="patch">
         <label for="title">Title</label>
@@ -25,7 +27,7 @@
 
     <form action="/post/add_author_to_book/{{book.getId}}" method="post">
         <select name="author">
-        {% for author in authors %}
+            {% for author in authors %}
                 <option value="{{author.getId}}">{{author.getFullName}}</option>
             {% endfor %}
         </select>
@@ -38,7 +40,8 @@
                 <option value="{{book['id']}}">{{book['patron'].getFullName}}</option>
             {% endfor %}
         </select>
-        <button type="submit" name="button">Return {{book.getTitle}}</button>
+        <button type="submit" name="button">Return
+            {{book.getTitle}}</button>
 
     </form>
 {% endblock %}

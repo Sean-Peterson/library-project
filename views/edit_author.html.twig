@@ -1,11 +1,13 @@
 {% extends 'index.html.twig' %}
 
 {% block header %}
-    <a href="/librarians">home</a> <a href="/authors">back</a>
+    <a href="/librarians">home</a>
+    <a href="/authors">back</a>
 {% endblock %}
 
 {% block content %}
-    <h2>Edit {{author.getFullName}}</h2>
+    <h2>Edit
+        {{author.getFullName}}</h2>
 {% endblock %}
 
 {% block controls %}
@@ -26,7 +28,7 @@
     </form>
     <form action="/post/add_book_to_author/{{author.getId}}" method="post">
         <select name="book">
-        {% for book in books %}
+            {% for book in books %}
                 <option value="{{book.getId}}">{{book.getTitle}}</option>
             {% endfor %}
         </select>

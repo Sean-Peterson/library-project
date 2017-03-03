@@ -113,7 +113,8 @@
         $book = BookTitle::find($id);
         $title = $_POST['title'];
         $book->updateTitle($title);
-        return $app['twig']->render("edit_book.html.twig", array('books' => BookTitle::getAll(), 'book' => BookTitle::find($id), 'authors' => Author::getAll()));
+        return $app->redirect('/book/' . $id);
+        // return $app['twig']->render("edit_book.html.twig", array('books' => BookTitle::getAll(), 'book' => BookTitle::find($id), 'authors' => Author::getAll()));
     });
 
     $app->delete("/delete/book/{id}", function($id) use ($app) {

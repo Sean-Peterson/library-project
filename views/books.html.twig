@@ -13,11 +13,11 @@
             {% set authors = book.getAuthors %}
             {% if authors != null %}
                 <ul>
-                {% for author in authors %}
+                    {% for author in authors %}
                     <li>{{author.getFullName}}</li>
                 {% endfor %}
             </ul>
-            {% endif %}
+        {% endif %}
     {% endfor %}
 {% endif %}
 {% endblock %}

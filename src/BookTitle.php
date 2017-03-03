@@ -63,6 +63,7 @@ require_once __DIR__."/../src/Author.php";
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM book_titles WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM book_copies WHERE book_title_id = {$this->getId()};");
         }
 
         function updateTitle($new_title)

@@ -5,27 +5,31 @@
 {% endblock %}
 
 {% block content %}
-<h1>Users</h1>
+    <h1>Users</h1>
 
     {% if patrons != null %}
         <ul>
 
             {% for patron in patrons %}
-            <li>{{patron.getFullName}}<a href="/patron/{{patron.getId}}"><button type="button" name="button">Login</button></a></li>
+                <li>{{patron.getFullName}}
+                    <a href="/patron/{{patron.getId}}">
+                        <button type="button" name="button">Login</button>
+                    </a>
+                </li>
 
-        {% endfor %}
+            {% endfor %}
         </ul>
     {% endif %}
 
 {% endblock %}
 
 {% block controls %}
-<h1>Enter new user credentials</h1>
-<form action="/add_patron" method="post">
-    <label for="first_name">First Name</label>
-    <input required type="text" name="first_name"><br>
-    <label for="last_name">Last Name</label>
-    <input required type="text" name="last_name">
-    <button type="submit" name="button">Add User</button>
-</form>
+    <h1>Enter new user credentials</h1>
+    <form action="/add_patron" method="post">
+        <label for="first_name">First Name</label>
+        <input required type="text" name="first_name"><br>
+        <label for="last_name">Last Name</label>
+        <input required type="text" name="last_name">
+        <button type="submit" name="button">Add User</button>
+    </form>
 {% endblock %}

@@ -123,6 +123,9 @@
                 $book_copies_id = $book['book_copies_id'];
                 $query_one = $GLOBALS['DB']->query("SELECT * FROM book_copies WHERE id ={$book_copies_id};");
                 $copy = $query_one->fetchAll(PDO::FETCH_ASSOC);
+                if ($copy == null) {
+                    return null;
+                }
                 $book_title_id = $copy[0]['book_title_id'];
                 $new_book = BookTitle::find($book_title_id);
                 $title = $new_book->getTitle();

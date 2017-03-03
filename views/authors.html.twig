@@ -7,17 +7,19 @@
 {% block content %}
     {% if authors is not empty %}
         {% for author in authors %}
-            <li><a href="/author/{{author.getId}}">{{author.getFullName}}</a></li>
+            <li>
+                <a href="/author/{{author.getId}}">{{author.getFullName}}</a>
+            </li>
             {% set books = author.getBooks %}
             {% if books != null %}
                 <ul>
-                {% for book in books %}
+                    {% for book in books %}
                     <li>{{book.getTitle}}</li>
                 {% endfor %}
             </ul>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
 {% endblock %}
 
 {% block controls %}
